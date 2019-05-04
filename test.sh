@@ -1,0 +1,1 @@
+sample/test.x < sample/m1
