@@ -8,7 +8,8 @@ int main() {
 	int i;
 	int AMOUNT;
 	scanf("%d", &AMOUNT);
-	struct matrix* m = malloc(sizeof(struct matrix) * AMOUNT), MT;
+	struct matrix* m = malloc(sizeof(struct matrix) * AMOUNT), MT, TM;
+	prog PROG;
 	
 	for(i = 0; i < AMOUNT; i++) {
 		scanf("%d %d", &l, &c);
@@ -21,10 +22,17 @@ int main() {
 		putchar('\n');
 		
 		MT = cloneMatrix(m[i]);
-		scaleAndReduce(MT);
+		TM = cloneMatrix(MT);
+		PROG=scaleAndReduce(MT);
+		exportProg(&PROG,"P");
+		printf("\n");
+		exec(TM,&PROG);
 		printf("Reduzida de %c:\n", 'A' + i);
 		printMatrix(MT);
 		putchar('\n');
+		printf("Resultado da repetição do programa em %c:\n", 'A' + i);
+		printMatrix(TM);
+		putchar('\n'); 
 	}
 	
 	/*printf("A: l1 -> l1*-2: \n");
