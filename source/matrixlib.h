@@ -1,24 +1,26 @@
 #ifndef MATRIXLIB_H
 #define MATRIXLIB_H
 
-struct matrix {
+struct _matrix {
 	int l;			// number of lines
-	int c;			// number of colloms
+	int c;			// number of collums
 	double *mem;	// pointer to the values in memory
 };
 
-struct matrix newMatrix(int l, int c, int read);
-void allocMatrix(struct matrix *m);
-void readMatrix(struct matrix m);
-void printMatrix(struct matrix m);
-void freeMatrix(struct matrix m);
+typedef struct _matrix matrix;
 
-struct matrix cloneMatrix(struct matrix m);
-struct matrix multiplyMatrix(struct matrix a, double m);
-struct matrix addMatrix(struct matrix a, struct matrix b);
-struct matrix productMatrix(struct matrix a, struct matrix b);
-struct matrix transposeMatrix(struct matrix a);
+matrix newMatrix(int l, int c, int read);
+void allocMatrix(matrix *m);
+void readMatrix(matrix m);
+void printMatrix(matrix m);
+void freeMatrix(matrix m);
 
-double getElement(struct matrix m, int i, int j);
+matrix cloneMatrix(matrix m);
+matrix multiplyMatrix(matrix a, double m);
+matrix addMatrix(matrix a, matrix b);
+matrix productMatrix(matrix a, matrix b);
+matrix transposeMatrix(matrix a);
+
+double getElement(matrix m, int i, int j);
 
 #endif

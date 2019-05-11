@@ -19,15 +19,13 @@ Adding Line 1*K1 and Line 2*k2 = {'A',1*(k1),2*(k2)}
 
 */
 
-void exportProg(prog *_p,char* n)
-{
+void exportProg(prog *_p,char* n) {
 	FILE *out=fopen(n,"wb");
 	fwrite((*_p).p,sizeof(char),(*_p).len,out);
 	fclose(out);
 }
 
-int addToProg(prog* _p,char* pr,int len)
-{	
+int addToProg(prog* _p,char* pr,int len) {	
 	int i,j;
 	prog p=*_p;
 	if(len==0)return p.len;
@@ -41,29 +39,25 @@ int addToProg(prog* _p,char* pr,int len)
 	return p.len;
 }
 
-int addIntToProg(prog* _p,int a)
-{
+int addIntToProg(prog* _p,int a) {
 	int l=sizeof(a);
 	char*buf=malloc(l);
 	*(int*)&buf[0]=a;
 	return addToProg(_p,buf,l);
 }
 
-int addDoubleToProg(prog* _p,double a)
-{
+int addDoubleToProg(prog* _p,double a) {
 	int l=sizeof(a);
 	char*buf=malloc(l);
 	*(double*)&buf[0]=a;
 	return addToProg(_p,buf,l);
 }
-void exec(struct matrix m,prog* _p)
-{
+
+void exec(matrix m,prog* _p) {
 	unsigned int pc=0; //Program counter (like in assembly)
 	prog p=*_p;
-	while(pc<p.len)
-	{
-		switch(p.p[pc++])
-		{
+	while(pc<p.len) {
+		switch(p.p[pc++]) {
 			case 'S':
 				lineSwap(m,*(int*)&p.p[pc],*(int*)&p.p[pc+ints]);
 				pc+=2*ints;
@@ -88,7 +82,7 @@ void exec(struct matrix m,prog* _p)
 }
 
 //Operations
-int getLeadPos(struct matrix m, int line) {
+int getLeadPos(matrix m, int line) {
 	int j, k0 = line * m.c;
 	for (j=0; j<m.c; j++) {
 		if (m.mem[k0 + j] != 0) return j;
@@ -96,7 +90,7 @@ int getLeadPos(struct matrix m, int line) {
 	return -1;
 }
 
-int* getLeads(struct matrix m) {
+int* getLeads(matrix m) {
 	int *leads = malloc(m.l*sizeof(int)), i;
 	for(i=0; i<m.l; i++){
 		leads[i]=getLeadPos(m, i);
@@ -104,12 +98,12 @@ int* getLeads(struct matrix m) {
 	return leads;
 }
 
-double* lineAlloc(int size){
+double* lineAlloc(int size) {
 	double *line = (double *) malloc(size * sizeof(double));
 	return line;
 }
 
-double* lineMultiply(struct matrix m, int l, double k) {
+double* lineMultiply(matrix m, int l, double k) {
 	int x;
 	double *line = lineAlloc(m.c);
 	for (x=0; x<m.c; x++){
@@ -118,14 +112,14 @@ double* lineMultiply(struct matrix m, int l, double k) {
 	return line;
 }
 
-void linePlace(struct matrix m, int l, double* values) {
+void linePlace(matrix m, int l, double* values) {
 	int x;
 	for (x=0; x<m.c; x++){
 		m.mem[l*m.c+x] = values[x];
 	}
 }
 
-void lineSwap(struct matrix m, int line1, int line2){
+void lineSwap(matrix m, int line1, int line2) {
 	double* vl1 = lineMultiply(m, line1, 1);
 	double* vl2 = lineMultiply(m, line2, 1);
 	linePlace(m, line1, vl2);
@@ -134,7 +128,7 @@ void lineSwap(struct matrix m, int line1, int line2){
 	free(vl2);
 }
 
-void lineSum(struct matrix m, int lineA, int lineB, double kA, double kB){
+void lineSum(matrix m, int lineA, int lineB, double kA, double kB) {
 	double* vlA = lineMultiply(m, lineA, kA);
 	double* vlB = lineMultiply(m, lineB, kB);
 	double* vlN = lineAlloc(m.c);
@@ -151,7 +145,7 @@ void lineSum(struct matrix m, int lineA, int lineB, double kA, double kB){
 	free(vlN);
 } 
 
-prog sortByLeads(struct matrix m) {
+prog sortByLeads(matrix m) {
 	prog ret=prog_p;
 	int* leads = getLeads(m);
 	int x, y, tmp, size = m.l;
@@ -174,7 +168,7 @@ prog sortByLeads(struct matrix m) {
 	return ret;
 }
 
-prog normalizeLeads(struct matrix m) {
+prog normalizeLeads(matrix m) {
 	prog ret=prog_p;
 	int* leads = getLeads(m);
 	int x, size = m.l;
@@ -195,7 +189,7 @@ prog normalizeLeads(struct matrix m) {
 	return ret;
 }
 
-prog removeRepeatedLeads(struct matrix m, int col) {
+prog removeRepeatedLeads(matrix m, int col) {
 	prog ret=prog_p;
 	int* leads = getLeads(m);
 	int x, size = m.l, firstlead = -1;
@@ -232,7 +226,7 @@ prog removeRepeatedLeads(struct matrix m, int col) {
 	return ret;
 }
 
-prog scaleAndReduce(struct matrix m) {
+prog scaleAndReduce(matrix m) {
 	prog ret=prog_p;
 	prog temp;
 	int x = 0, size = m.c;

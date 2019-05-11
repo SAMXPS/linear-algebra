@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct matrix newMatrix(int l, int c, int read) {
-	struct matrix m;
+matrix newMatrix(int l, int c, int read) {
+	matrix m;
 	m.l = l;
 	m.c = c;
 	allocMatrix(&m);
@@ -11,20 +11,20 @@ struct matrix newMatrix(int l, int c, int read) {
 	return m;
 }
 
-void allocMatrix(struct matrix *m) {
+void allocMatrix(matrix *m) {
 	if (m->l) {
 		(*m).mem = malloc((*m).l*(*m).c*sizeof(double));
 	}
 }
 
-void readMatrix(struct matrix m) {
+void readMatrix(matrix m) {
 	if (m.l) {
 		int i=0, lc=m.l*m.c;
 		while (i<lc && scanf("%lf", m.mem + (i++)));
 	}
 }
 
-void printMatrix(struct matrix m) {
+void printMatrix(matrix m) {
 	if (!m.l) {
 		printf("INVALID MATRIX\n");
 	} else {
@@ -33,16 +33,16 @@ void printMatrix(struct matrix m) {
 	}
 }
 
-void freeMatrix(struct matrix m) {
+void freeMatrix(matrix m) {
 	free(m.mem);
 }
 
-struct matrix cloneMatrix(struct matrix m) {
+matrix cloneMatrix(matrix m) {
 	return multiplyMatrix(m, 1);
 }
 
-struct matrix multiplyMatrix(struct matrix a, double k) {
-	struct matrix m;
+matrix multiplyMatrix(matrix a, double k) {
+	matrix m;
 	if (a.l) {
 		m = newMatrix(a.l, a.c, 0);
 		int i, lc=a.l*a.c;
@@ -55,8 +55,8 @@ struct matrix multiplyMatrix(struct matrix a, double k) {
 	return m;
 }
 
-struct matrix addMatrix(struct matrix a, struct matrix b){
-	struct matrix m;
+matrix addMatrix(matrix a, matrix b) {
+	matrix m;
 	if (a.l == b.l && a.c == b.c){
 		m = newMatrix(a.l, a.c, 0);
 		int i, lc=a.l*a.c;
@@ -69,8 +69,8 @@ struct matrix addMatrix(struct matrix a, struct matrix b){
 	return m;
 }
 
-struct matrix productMatrix(struct matrix a, struct matrix b){
-	struct matrix P;
+matrix productMatrix(matrix a, matrix b) {
+	matrix P;
 	if (a.c == b.l){
 		int m = a.l, n = b.c, t = a.c;
 		P = newMatrix(m, n, 0);
@@ -89,8 +89,8 @@ struct matrix productMatrix(struct matrix a, struct matrix b){
 	return P;
 }
 
-struct matrix transposeMatrix(struct matrix a) {
-	struct matrix m;
+matrix transposeMatrix(matrix a) {
+	matrix m;
 	if (a.l) {
 		m = newMatrix(a.c, a.l, 0);
 		int x, lc=a.l*a.c;
@@ -106,6 +106,6 @@ struct matrix transposeMatrix(struct matrix a) {
 	return m;
 }
 
-double getElement(struct matrix m, int i, int j){
+double getElement(matrix m, int i, int j) {
 	return m.mem[i*m.c + j];
 }
