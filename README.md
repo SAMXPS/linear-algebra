@@ -7,7 +7,7 @@ This library provides the following functions and types:
 
 ### Types & Structs
 
-* ```struct matrix```
+* ```struct _matrix / type matrix```
 . A simple matrix.
 . Contains:
 -- ```int l``` = Height (lines)
